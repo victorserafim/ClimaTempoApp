@@ -18,24 +18,24 @@ import org.json.JSONObject
 
 
 class MainActivity : AppCompatActivity() {
-    //weather url to get JSON
-    var weather_url1 = ""
-    //api id for url
-    var api_id1 = "6432d1c22b32445a809871688125500b"
+    //url do api para pegar o JSON
+    var weatherUrl = ""
+    //api key para a url
+    var apiId = "a29a7ac2575941128cb68ca5aaa891ce"
     private lateinit var textView: TextView
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //link the textView in which the temperature will be displayed
+        //link do textView em cada temperatura que vai ser mostrado
         textView = findViewById(R.id.textView)
-        //create an instance of the Fused Location Provider Client
+        //cria uma instancia que prove uma localização do cliente
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        Log.e("lat", weather_url1)
-        //on clicking this button function to get the coordinates will be called
+        Log.e("lat", weatherUrl)
+        //no clique do botão chama a função de pegar as coordenadas
         btVar1.setOnClickListener {
             Log.e("lat", "onClick")
-            //function to find the coordinates of the last location
+            //função que acha as coordenadas da ultima localização
             obtainLocation()
         }
 
@@ -43,39 +43,39 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingPermission")
     private fun obtainLocation(){
         Log.e("lat", "function")
-        //get the last location
+        //pega a ultima localização
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
-                //get the latitute and longitude and create the http URL
-                weather_url1 = "https://api.weatherbit.io/v2.0/current?" + "lat=" + location?.latitude +"&lon="+ location?.longitude + "&key="+ api_id1
-                Log.e("lat", weather_url1.toString())
-                //this function will fetch data from URL
+                //pega a latitude e longitude e cria o https
+                weatherUrl = "https://api.weatherbit.io/v2.0/current?" + "lat=" + location?.latitude +"&lon="+ location?.longitude + "&key="+ apiId
+                Log.e("lat", weatherUrl.toString())
+                //essa função vai dar um fetch
                 getTemp()
             }
     }
 
     fun getTemp() {
-        // Instantiate the RequestQueue.
+        // instancia a RequestQueue.
         val queue = Volley.newRequestQueue(this)
-        val url: String = weather_url1
+        val url: String = weatherUrl
         Log.e("lat", url)
-        // Request a string response from the provided URL.
+        // Request a resposta da string para prover a URL.
         val stringReq = StringRequest(Request.Method.GET, url,
             Response.Listener<String> { response ->
                 Log.e("lat", response.toString())
-                //get the JSON object
+                //pega o objeto JSON
                 val obj = JSONObject(response)
-                //get the Array from obj of name - "data"
+                //pega o Array do obj
                 val arr = obj.getJSONArray("data")
                 Log.e("lat obj1", arr.toString())
-                //get the JSON object from the array at index position 0
+                //pega no Json o array na posição 0
                 val obj2 = arr.getJSONObject(0)
                 Log.e("lat obj2", obj2.toString())
-                //set the temperature and the city name using getString() function
-                textView.text = obj2.getString("temp")+" deg Celcius in "+obj2.getString("city_name")
+                //seta a temperatura e a cidade
+                textView.text = obj2.getString("temp")+" graus Celsius em "+obj2.getString("city_name")
             },
-            //In case of any error
-            Response.ErrorListener { textView!!.text = "That didn't work!" })
+            //em caso de algum erro
+            Response.ErrorListener { textView!!.text = "Não foi possivel localizar" })
         queue.add(stringReq)
     }
 }

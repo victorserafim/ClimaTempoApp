@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@drawable/weather_background">
+    android:background="@drawable/new_weather_background">
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Get Weather"
+        android:text="clique"
         android:layout_centerInParent="true"
         android:id="@+id/btVar1"
         android:textSize="20dp"
@@ -26,7 +26,7 @@
         android:layout_margin="40dp"
         android:layout_marginBottom="100dp"
         android:id="@+id/textView"
-        android:text="Get temperature here"
+        android:text="Marque o Tempo"
         android:textColor="#F6F8F5"/>
 
 </RelativeLayout>
